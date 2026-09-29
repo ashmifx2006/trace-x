@@ -1,36 +1,65 @@
-# TRACE-X: Follow the Money. Reveal the Network.
-Byteathon BYT01: coordinated money-laundering network detection using transactional and temporal patterns. Synthetic data only.
+# TRACE-X: Follow the Money. Reveal the Network. 🔍
 
-## Run (two terminals)
-```
-# backend (Python 3.10+)
-cd backend && pip install -r requirements.txt
-python manage.py makemigrations api && python manage.py migrate && python manage.py seed_users
-python manage.py runserver          # http://localhost:8000
-# frontend (Node 18+)
-cd frontend && npm install && npm run dev   # http://localhost:5173
-```
-Regenerate data: `python scripts/generate_demo_data.py` (10k+ transactions, 580 accounts, 16 injected scenarios, rest normal).
+> **Coordinated transaction-network analysis for detecting suspicious financial patterns using transactional and temporal behavior.**
 
-## Login
-Demo users (created by `seed_users`): `analyst / trace-x-demo`, `admin / trace-x-admin`. Token auth (signed, 24h expiry) protects every API route. Change these passwords for anything beyond a demo.
+TRACE-X is a full-stack intelligence platform built for **Byteathon BYT01**. It reconstructs transaction networks from synthetic financial data, identifies suspicious behavioral patterns, generates explainable risk scores, and provides an interactive workspace for investigating detected networks.
 
-## PostgreSQL (optional)
-`pip install psycopg2-binary` then set `TRACEX_DB=postgres POSTGRES_DB POSTGRES_USER POSTGRES_PASSWORD POSTGRES_HOST` before migrating. Default is SQLite.
+⚠️ **All transaction data is synthetic and intended for demonstration/research purposes only. TRACE-X does not determine whether real-world financial activity constitutes money laundering or other criminal activity.**
 
-## Tests
-`python backend/tests/test_engine.py` (engine, no Django needed) and `python manage.py test api` (API smoke + case/evidence/PDF flow). Or run `scripts/setup.sh`.
+---
 
-## Screens
-Login, Command Center, Transaction Explorer, Graph Explorer (search, filters, expand), Suspicious Networks (DNA compare), Network workspace (replay, timeline, DNA, accounts, transactions, patterns, risk, evidence pins, notes, report), Account Intelligence, Alerts (acknowledge), Cases, Data Upload, System.
+## 🚀 What TRACE-X Does
 
-## How it works
-1. **Temporal flow links**: tx A->B and B->C are linked when C is forwarded within 30 min and retains 60-100% of the amount.
-2. **Network reconstruction**: linked transactions plus smurfing and velocity flags are grouped into connected components; components sharing 2+ accounts merge (repeated behavior).
-3. **Pattern detection**: circular flow (graph cycles), rapid pass-through, mule chain, smurfing (fan-in/out aggregation), high velocity, repeated behavior, amount anomaly.
-4. **Explainable risk** (0-100): weights in `intelligence/engine.py`, including a multi-pattern correlation factor. Every point is listed with evidence.
-5. **Network DNA**: behavioral fingerprint and radar, comparable across networks.
-6. **Money-trail replay**, **case workflow with notes**, **PDF dossier**, **CSV upload** re-running the whole pipeline.
+TRACE-X analyzes transaction flows as interconnected networks rather than treating individual transactions in isolation.
 
-## API
-`/api/dashboard/summary/ /transactions/ /transactions/{id}/ /accounts/ /accounts/{id}/ /networks/ /networks/{id}/ /networks/{id}/report/ /alerts/ /cases/ /cases/{id}/ /cases/{id}/notes/ /upload/ /search/ /system/`
+It can:
+
+- 🔗 Reconstruct connected transaction networks
+- ⏱️ Analyze temporal transaction relationships
+- 🔍 Detect suspicious behavioral patterns
+- 🧠 Generate explainable risk scores
+- 🧬 Create behavioral "Network DNA" fingerprints
+- 📊 Explore transactions and accounts interactively
+- 🔄 Replay money trails through a network
+- 🚨 Manage suspicious-activity alerts
+- 📁 Create investigation cases
+- 📝 Add notes and evidence to cases
+- 📄 Generate PDF investigation dossiers
+- 📤 Upload CSV transaction data and rerun the analysis pipeline
+
+---
+
+## ✨ Key Detection Patterns
+
+TRACE-X looks for multiple behavioral patterns, including:
+
+| Pattern | Description |
+|---|---|
+| 🔄 Circular Flow | Transactions forming cycles within a network |
+| ⚡ Rapid Pass-through | Funds moving quickly through multiple accounts |
+| ⛓️ Mule Chain | Sequential movement through intermediary accounts |
+| 💠 Smurfing | Aggregated fan-in/fan-out transaction behavior |
+| 🚀 High Velocity | Unusually frequent transaction activity |
+| 🔁 Repeated Behavior | Recurring transaction relationships |
+| 📈 Amount Anomaly | Unusual transaction amounts |
+
+Multiple patterns can contribute to a network's overall risk score.
+
+---
+
+## 🧠 How It Works
+
+### 1. Temporal Flow Linking
+
+Transactions are connected when a downstream transaction occurs within **30 minutes** and retains approximately **60–100% of the original amount**.
+
+```text
+Account A
+    │
+    │ $10,000
+    ▼
+Account B
+    │
+    │ $8,500
+    ▼
+Account C
